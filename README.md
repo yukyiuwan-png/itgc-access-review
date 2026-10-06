@@ -135,7 +135,12 @@ The sample is built so a few controls are operating as well as failing:
 
 ## What I learned
 
-_Add two or three sentences here after you have run the review yourself: which exception was hardest to explain, what you would change in `rules.yaml` before using this on a real anonymised population, and which ISO control you now feel confident mapping._
+I built this project with an AI coding assistant, then ran the review and read through every exception myself to make sure I could explain it the way an IT auditor would.
+
+- **One account, several failures.** Helen Cho shows up under TER-01, PST-01 and DRM-01 at the same time. Counting exceptions isn't the same as counting accounts, so the summary has to say both (29 exceptions across 22 accounts).
+- **Classifying an exception correctly matters.** `svc_payroll` has no HR owner but does have an approval ticket. It's an orphan account (ORP-01), not an unapproved admin, and those two findings call for different remediations.
+- **A passing test isn't proof the control works.** ADM-01 only checks that a ticket ID exists. It can't tell whether the right person approved it. Before using this on a real, anonymised population, I'd add a ticket-approver check and a whitelist for service accounts in `rules.yaml`.
+- **Control mapping.** I now feel confident mapping segregation of duties to ISO/IEC 27001:2022 Annex A 5.3 and joiner–mover–leaver issues to 5.18. Handling client personal data in my part-time role as a licensed insurance agent showed me why access rights need to end when the reason for them ends.
 
 ## Layout
 
