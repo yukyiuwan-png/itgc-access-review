@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ITGC access review — Harbor &amp; Pine Trading (fictional)</title>
+  <style>
+    :root {
+      --ink: #1c2430;
+      --muted: #5c6570;
+      --paper: #f3efe6;
+      --card: #fffcf7;
+      --line: #e2d9cc;
+      --navy: #1b3044;
+      --brick: #9a3412;
+      --amber: #92400e;
+      --green: #166534;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font: 15px/1.5 "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    }
+    .banner { background: var(--navy); color: #f7f4ee; }
+    .banner-inner, main { max-width: 1040px; margin: 0 auto; padding: 32px 20px; }
+    main { padding-top: 28px; padding-bottom: 64px; }
+    .kicker {
+      margin: 0 0 8px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-size: 12px;
+      color: #d7c4a3;
+    }
+    h1, h2 {
+      font-family: Georgia, "Iowan Old Style", Palatino, "Palatino Linotype", serif;
+      font-weight: normal;
+    }
+    h1 { margin: 0; font-size: 36px; line-height: 1.15; }
+    h2 { margin: 36px 0 8px; font-size: 26px; }
+    h2 code { font-size: 0.75em; }
+    .sub { margin: 10px 0 0; color: #e7e1d6; }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: -28px;
+    }
+    .stat {
+      background: var(--card);
+      border: 1px solid var(--line);
+      padding: 12px 14px;
+    }
+    .stat span { display: block; color: var(--muted); font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; }
+    .stat b { display: block; margin-top: 2px; font-family: Georgia, Palatino, serif; font-size: 28px; font-weight: normal; }
+    .stat.high b { color: var(--brick); }
+    .stat.medium b { color: var(--amber); }
+    .stat.ok b { color: var(--green); }
+    .note { color: var(--muted); font-size: 14px; }
+    .table-scroll { overflow-x: auto; border: 1px solid var(--line); background: var(--card); }
+    table { width: 100%; border-collapse: collapse; min-width: 720px; }
+    th {
+      text-align: left;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 2px solid var(--navy);
+      padding: 10px;
+    }
+    td { border-bottom: 1px solid var(--line); vertical-align: top; padding: 10px; }
+    td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+    tr.total td { font-weight: 600; border-bottom: none; }
+    a { color: var(--navy); }
+    code { font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; font-size: 0.92em; }
+    .pill {
+      display: inline-block;
+      padding: 1px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+    .pill.high { background: #fde8e4; color: var(--brick); }
+    .pill.medium { background: #fef3c7; color: var(--amber); }
+    .pill.low, .pill.ok { background: #dcfce7; color: var(--green); }
+    .objective { margin: 0 0 4px; }
+    .meta { margin: 0 0 8px; color: var(--muted); font-size: 14px; }
+    .finding {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--navy);
+      padding: 12px 14px;
+      margin: 10px 0;
+    }
+    .finding.high { border-left-color: var(--brick); }
+    .finding.medium { border-left-color: var(--amber); }
+    .finding.low { border-left-color: var(--green); }
+    .finding header { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+    .who { margin: 4px 0; }
+    .evidence { margin: 6px 0; }
+    .facts { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 8px 0 0; }
+    .facts div { min-width: 8.5rem; }
+    .facts dt {
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .facts dd { margin: 0; }
+    .fix { margin: 8px 0 0; font-size: 14px; }
+    .fix span, .section-fix span {
+      display: inline-block;
+      margin-right: 6px;
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .empty {
+      background: var(--card);
+      border: 1px dashed var(--line);
+      padding: 12px 14px;
+      color: var(--green);
+    }
+    footer {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 0 20px 40px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    @media (max-width: 720px) {
+      h1 { font-size: 28px; }
+      .stats { grid-template-columns: 1fr 1fr; }
+    }
+    @media print {
+      body { background: white; }
+      .banner { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .finding, .stat { break-inside: avoid; }
+      a { text-decoration: none; color: inherit; }
+    }
+  </style>
+</head>
+<body>
+  <header class="banner">
+    <div class="banner-inner">
+      <p class="kicker">IT general controls · Access to programs and data</p>
+      <h1>User access review</h1>
+      <p class="sub">Harbor &amp; Pine Trading (fictional) · LedgerOne ERP · As of 30 September 2026</p>
+    </div>
+  </header>
+  <main>
+    <section class="stats" aria-label="Review totals">
+      <div class="stat"><span>Employees</span><b>72</b></div>
+      <div class="stat"><span>Accounts</span><b>102</b></div>
+      <div class="stat"><span>Exceptions</span><b>29</b></div>
+      <div class="stat high"><span>Overall rating</span><b>High</b></div>
+    </section>
+    <p class="note">
+      64 active and 8 terminated employees.
+      22 accounts have at least one exception.
+      An account can appear under more than one test. Severity comes from the rule file;
+      it is a starting point for the reviewer, not a risk rating.
+    </p>
+    <p class="meta">Sources: HR sample_data/hr.csv, accounts sample_data/accounts.csv, rules rules.yaml.</p>
+    <h2>Summary</h2>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Rule</th>
+            <th>Test</th>
+            <th>Severity</th>
+            <th class="num">Exceptions</th>
+            <th>Control objective</th>
+            <th>ISO/IEC 27001:2022</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><a href="#TER-01"><code>TER-01</code></a></td><td>Terminated employee still has an active account</td><td><span class="pill high">High</span></td><td class="num">5</td><td>Access is removed when employment ends.</td><td>5.18 Access rights; 5.15 Access control</td></tr>
+<tr><td><a href="#ORP-01"><code>ORP-01</code></a></td><td>Account has no matching HR record</td><td><span class="pill medium">Medium</span></td><td class="num">9</td><td>Every account maps to a person on the HR roster.</td><td>5.16 Identity management; 5.18 Access rights</td></tr>
+<tr><td><a href="#ADM-01"><code>ADM-01</code></a></td><td>Privileged access without an approval ticket</td><td><span class="pill high">High</span></td><td class="num">4</td><td>Privileged access is approved before it is granted.</td><td>8.2 Privileged access rights; 5.18 Access rights</td></tr>
+<tr><td><a href="#DRM-01"><code>DRM-01</code></a></td><td>Dormant account</td><td><span class="pill medium">Medium</span></td><td class="num">5</td><td>Accounts with no recent login are removed or reconfirmed.</td><td>5.18 Access rights</td></tr>
+<tr><td><a href="#SOD-01"><code>SOD-01</code></a></td><td>Segregation of duties conflict</td><td><span class="pill high">High</span></td><td class="num">4</td><td>One person does not hold both sides of a conflicting duty.</td><td>5.3 Segregation of duties</td></tr>
+<tr><td><a href="#PST-01"><code>PST-01</code></a></td><td>Account created after the termination date</td><td><span class="pill high">High</span></td><td class="num">2</td><td>An account is not created after the person has left.</td><td>5.18 Access rights; 5.15 Access control</td></tr>
+<tr class="total"><td></td><td>Total exceptions</td><td></td><td class="num">29</td><td></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <section id="TER-01">
+      <h2><code>TER-01</code> Terminated employee still has an active account</h2>
+      <p class="objective">Access is removed when employment ends.</p>
+      <p class="meta">Access to programs and data · ISO/IEC 27001:2022 5.18 Access rights; 5.15 Access control</p>
+      
+      <p class="fix section-fix"><span>Suggested remediation</span> Disable or delete the account, keep the system evidence of revocation, and link it to the leaver request.</p>
+      <p class="meta">5 exceptions</p>
+      
+    <article class="finding high">
+      <header>
+        <code>hcho</code>
+        <span class="pill high">High</span>
+      </header>
+      <p class="who">Helen Cho · E1067 · Procurement · Manager Rowan Mbeki</p>
+      <p class="evidence">HR status is terminated on 2026-01-10, and username hcho is still on the active account export.</p>
+      <dl class="facts"><div><dt>HR status</dt><dd>terminated</dd></div><div><dt>Roles</dt><dd>create_vendor</dd></div><div><dt>Admin</dt><dd>No</dd></div><div><dt>Last login</dt><dd>—</dd></div><div><dt>Created</dt><dd>2026-03-01</dd></div><div><dt>Approval ticket</dt><dd>—</dd></div></dl>
+      <p class="fix"><span>Remediation</span> Disable or delete the account, keep the system evidence of revocation, and link it to the leaver request.</p>
+    </article>
+    
+
+    <article class="finding high">
+      <header>
+        <code>lvoss</code>
+        <span class="pill high">High</span>
+      </header>
+      <p class="who">Lena Voss · E1069 · Sales · Manager Casey Diallo</p>
+      <p class="evidence">HR status is terminated on 2026-04-01, and username lvoss is still on the active account export.</p>
+      <dl class="facts"><div><dt>HR status</dt><dd>terminated</dd></div><div><dt>Roles</dt><dd>view_reports</dd></div><div><dt>Admin</dt><dd>No</dd></div><div><dt>Last login</dt><dd>2026-09-15</dd></div><div><dt>Created</dt><dd>2026-04-15</dd></div><div><dt>Approval ticket</dt><dd>—</dd></div></dl>
+      <p class="fix"><span>Remediation</span> Disable or delete the account, keep the system evidence of revocation, and link it to the leaver request.</p>
+    </article>
+    
+
+    <article class="finding high">
+      <header>
+        <code>mhale</code>
+        <span class="pill high">High</span>
+      </header>
+      <p class="who">Marcus Hale · E1065 · Finance · Manager Emery Bergstrom</p>
+      <p class="evidence">HR status is terminated on 2026-06-15, and username mhale is still on the active account export.</p>
+      <dl class="facts"><div><dt>HR status</dt><dd>terminated</dd></div><div><dt>Roles</dt><dd>create_journal</dd></div><div><dt>Admin</dt><dd>No</dd></div><div><dt>Last login</dt><dd>2026-08-20</dd></div><div><dt>Created</dt><dd>2024-02-01</dd></div><div><dt>Approval ticket</dt><dd>—</dd></div></dl>
+      <p class="fix"><span>Remediation</span> Disable or delete the account, keep the system evidence of revocation, and link it to the leaver request.</p>
+    </article>
+    
+
+    <article class="finding high">
+      <header>
+        <code>obriggs</code>
+        <span class="pill high">High</span>
+      </header>
+      <p class="who">Owen Briggs · E1068 · Operations · Manager Skyler Rossi</p>
+      <p class="evidence">HR status is terminated on 2026-09-01, and username obriggs is still on the active account export.</p>
+      <dl class="facts"><div><dt>HR status</dt><dd>terminated</dd></div><div><dt>Roles</dt><dd>create_payment;approve_payment</dd></div><div><dt>Admin</dt><dd>No</dd></div><div><dt>Last login</dt><dd>2026-08-28</dd></div><div><dt>Created</dt><dd>2022-05-01</dd></div><div><dt>Approval ticket</dt><dd>—</dd></div></dl>
+      <p class="fix"><span>Remediation</span> Disable or delete the account, keep the system evidence of revocation, and link it to the leaver request.</p>
+    </article>
+    
+
+    <article class="finding high">
+      <header>
+        <code>pnanda</code>
+        <span class="pill high">High</span>
+      </header>
+      <p class="who">Priya Nandakumar · E1066 · Information Technology · Manager Wei Chen</p>
+      <p class="evidence">HR status is terminated on 2026-08-01, and username pnanda is still on the active account export.</p>
+      <dl class="facts"><div><dt>HR status</dt><dd>terminated</dd></div><div><dt>Roles</dt><dd>manage_users</dd></div><div><dt>Admin</dt><dd>Yes</dd></div><div><dt>Last login</dt><dd>2026-07-20</dd></div><div><dt>Created</dt><dd>2023-11-01</dd></div><div><dt>Approval ticket</dt><dd>—</dd></div></dl>
+      <p class="fix"><span>Remediation</span> Disable or delete the account, keep the system evidence of revocation, and link it to the leaver request.</p>
+    </article>
+    
+    </section>
+    
+
+    <section id="ORP-01">
+      <h2><code>ORP-01</code> Account has no matching HR record</h2>
+      <p class="objective">Every account maps to a person on the HR roster.</p>
+      <p class="meta">Access to programs and data · ISO/IEC 27001:2022 5.16 Identity management; 5.18 Access rights</p>
+      
+      <p class="fix section-fix"><span>Suggested remediation</span> Map the account to an employee id, or disable it and find out how it was created.</p>
+      <p class="meta">9 exceptions</p>
+      
+    <article class="finding medium">
+      <header>
+        <code>admin_legacy</code>
+        <span class="pill medium">Medium</span>
+      </header>
+      <p class="who">No HR record · (blank id)</p>
+      <p class="evidence">Username admin_legacy has employee_id (blank), which does not match any row in the HR roster.</p>
+      <dl class="facts"><div><dt>HR status</dt><dd>no HR record</dd></div><div><dt>Roles</dt><dd>manage_users</dd></div><div><dt>Admin</dt><dd>Yes</dd></div><div><dt>Last login</dt><dd>2026-09-20</dd></div><div><dt>Created</dt><dd>2019-06-01</dd></div><div><dt>Approval ticket</dt><dd>—</dd></div></dl>
+      <p class="fix"><span>Remediation</span> Map the account to an employee id, or disable it and find out how it was created.</p>
+    </article>
+    
+
+    <article class="finding medium">
+      <header>
+        <code>audit_temp</code>
+        <span class="pill medium">Medium</span>
+      </header>
+      <p class="who">No HR record · X-22</p>
+      <p class="evidence">Username audit_temp has employee_id X-22, which does not match any row in the HR roster.</p>
+      <dl class="facts"><div><dt>HR status</dt><dd>no HR record</dd></div><div><dt>Roles</dt><dd>view_ledger</dd></div><div><dt>Admin</dt><dd>No</dd></div><div><dt>Last login</dt><dd>2026-09-25</dd></div><div><dt>Created</dt><dd>2026-09-01</dd></div><div><dt>Approval ticket</dt><dd>—</dd></div></dl>
+      <p class="fix"><span>Remediation</span> Map the account to an employee id, or disable it and find out how it was created.</p>
+    </article>
+    
+
+    <article class="finding medium">
+      <header>
+        <code>intern_2024</code>
+        <span class="pill medium">Medium</span>
+      </header>
+      <p class="who">No HR record · E7777</p>
+      <p class="evidence">Username intern_2024 has employee_id E7777, which does not match any row in the HR roster.</p>
+      <dl class="facts"><div><dt>HR status</dt><dd>no HR record</dd></div><div><dt>Roles</dt><dd>view_ledger</dd></div><div><dt>Admin</dt><dd>No</dd></div><div><dt>Last login</dt><dd>2026-09-01</dd></div><div><dt>Created</dt><dd>2024-06-01</dd></div><div><dt>Approval ticket</dt><dd>—</dd></div></dl>
+      <p class="fix"><span>Remediation</span> Map the account to an employee id, or disable it and find out how it was created.</p>
+    </article>
+    
+
+    <article class="finding medium">
+      <header>
+        <code>jdoe_old</code>
+        <span class="pill medium">Medium</span>
+      </header>
+      <p class="who">No HR record · E0007</p>
+      <p class="evidence">Username jdoe_old has employee_id E0007, which does not match any row in the HR roster.</p>
+      <dl class="facts"><div><dt>HR status</dt><dd>no HR record</dd></div><div><dt>Roles</dt><dd>view_reports</dd></div><div><dt>Admin</dt><dd>No</dd></div><div><dt>Last login</dt><dd>2025-11-02</dd></div><div><dt>Created</dt><dd>2022-03-01</dd></div><div><dt>Approval ticket</dt><dd>—</dd></div></dl>
+      <p class="fix"><span>Remediation</span> Map the account to an employee id, or disable it and find out how it was created.</p>
+    </article>
+    
+
+    <article class="finding medium">
+      <header>
+        <code>shared_inbox</code>
+        <span class="pill medium">Medium</span>
+      </header>
+      <p class="who">No HR record · (blank id)</p>
+      <p class="evidence">Username shared_inbox has employee_id (blank), which does not match any row in the HR roster.</p>
+      <dl class="facts"><div><dt>HR status</dt><dd>no HR record</dd></div><div><dt>Roles</dt><dd>view_reports</dd></div><div><dt>Admin</dt><dd>No</dd></div><div><dt>Last login</dt><dd>2026-08-20</dd></div><div><dt>Created</dt><dd>2020-01-01</dd></div><div><dt>Approval ticket</dt><dd>—</dd></div></dl>
+      <p class="fix"><span>Remediation</span> Map the account to an employee id, or disable it and find out how it was created.</p>
+    </article>
+    
+
+    <article class="finding medium">
+      <header>
+        <code>svc_nightly</code>
+        <span class="pill medium">Medium</span>
+      </header>
+      <p class="who">No HR record · (blank id)</p>
+      <p class="evidence">Username svc_nightly has employee_id (blank), which does not match any row in the HR roster.</p>
+      <dl class="facts"><div><dt>HR status</dt><dd>no HR record</dd></div><div><dt>Roles</dt><dd>view_reports</dd></div><div><dt>Admin</dt><dd>No</dd></div><div><dt>Last login</dt><dd>2026-09-28</dd></div><div><dt>Created</dt><dd>2024-01-15</dd></div><div><dt>Approval ticket</dt><dd>—</dd></div></dl>
+      <p class="fix"><span>Remediation</span> Map the account to an employee id, or disable it and find out how it was created.</p>
+    </article>
+    
+
+    <article class="finding medium">
+      <header>
+        <code>svc_payroll</code>
+        <span class="pill medium">Medium</span>
+      </header>
+      <p class="who">No HR record · (blank id)</p>
+      <p class="evidence">Username svc_payroll has employee_id (blank), which does not match any row in the HR roster.</p>
+      <dl class="facts"><div><dt>HR status</dt><dd>no HR record</dd></div><div><dt>Roles</dt><dd>manage_users</dd></div><div><dt>Admin</dt><dd>Yes</dd></div><div><dt>Last login</dt><dd>2026-09-27</dd></div><div><dt>Created</dt><dd>2021-04-04</dd></div><div><dt>Approval ticket</dt><dd>ACC-2023-0881</dd></div></dl>
+      <p class="fix"><span>Remediation</span> Map the account to an employee id, or disable it and find out how it was created.</p>
+    </article>
+    
+
+    <article class="finding medium">
+      <header>
+        <code>temp_contractor</code>
+        <span class="pill medium">Medium</span>
+      </header>
+      <p class="who">No HR record · C-8841</p>
+      <p class="evidence">Username temp_contractor has employee_id C-8841, which does not match any row in the HR roster.</p>
+      <dl class="facts"><div><dt>HR status</dt><dd>no HR record</dd></div><div><dt>Roles</dt><dd>view_ledger</dd></div><div><dt>Admin</dt><dd>No</dd></div><div><dt>Last login</dt><dd>2026-09-10</dd></div><div><dt>Created</dt><dd>2026-08-01</dd></div><div><dt>Approval ticket</dt><dd>—</dd></div></dl>
+      <p class="fix"><span>Remediation</span> Map the account to an employee id, or disable it and find out how it was created.</p>
+    </article>
+    
+
+    <article class="finding medium">
+      <header>
+        <code>vendor_portal</code>
+        <span class="pill medium">Medium</span>
+      </header>
+      <p class="who">No HR record · V-100</p>
+      <p class="evidence">Username vendor_portal has employee_id V-100, which does not match any row in the HR roster.</p>
+      <dl class="facts"><div><dt>HR status</dt><dd>no HR record</dd></div><div><dt>Roles</dt><dd>view_reports</dd></div><div><dt>Admin</dt><dd>No</dd></div><div><dt>Last login</dt><dd>2026-08-15</dd></div><div><dt>Created</dt><dd>2025-01-01</dd></div><div><dt>Approval ticket</dt><dd>—</dd></div></dl>
+      <p class="fix"><span>Remediation</span> Map the account to an employee id, or disable it and find out how it was created.</p>
+    </article>
+    
+    </section>
+    
+
+    <section id="ADM-01">
+      <h2><code>ADM-01</code> Privileged access without an approval ticket</h2>
+      <p class="objective">Privileged access is approved before it is granted.</p>
+      <p class="meta">Access to programs and data · ISO/IEC 27001:2022 8.2 Privileged access rights; 5.18 Access rights</p>
+      
+      <p class="fix section-fix"><span>Suggested remediation</span> Remove the admin right or obtain a ticket from the system owner and record the ticket id on the account.</p>
+      <p class="meta">4 exceptions</p>
+      
+    <article class="finding high">
+      <header>
+        <code>admin_legacy</code>
+        <span class="pill high">High</span>
+      </header>
+      <p class="who">No HR record · (blank id)</p>
+      <p class="evidence">Username admin_legacy is an admin account and the approval ticket is blank.</p>
+      <dl class="facts"><div><dt>HR status</dt><dd>no HR record</dd></div><div><dt>Roles</dt><dd>manage_users</dd></div><div><dt>Admin</dt><dd>Yes</dd></div><div><dt>Last login</dt><dd>2026-09-20</dd></div><div><dt>Created</dt><dd>2019-06-01</dd></div><div><dt>Approval ticket</dt><dd>—</dd></div></dl>
+      <p class="fix"><span>Remediation</span> Remove the admin right or obtain a ticket from the system owner and record the ticket id on the account.</p>
+    </article>
+    
+
+    <article class="finding high">
+      <header>
+        <code>cfernandez</code>
+        <span class="pill high">High</span>
+      </header>
+      <p class="who">Carmen Fernandez · E1022 · Finance · Manager Emery Bergstrom</p>
+      <p class="evidence">Username cfernandez is an admin account and the approval ticket is blank.</p>
+      <dl class="facts"><div><dt>HR status</dt><dd>active</dd></div><div><dt>Roles</dt><dd>manage_users;view_ledger</dd></div><div><dt>Admin</dt><dd>Yes</dd></div><div><dt>Last login</dt><dd>2026-09-03</dd></div><div><dt>Created</dt><dd>2023-08-19</dd></div><div><dt>Approval ticket</dt><dd>—</dd></div></dl>
+      <p class="fix"><span>Remediation</span> Remove the admin right or obtain a ticket from the system owner and record the ticket id on the account.</p>
+    </article>
+    
+
+    <article class="finding high">
+      <header>
+        <code>pnanda</code>
+        <span class="pill high">High</span>
+      </header>
+      <p class="who">Priya Nandakumar · E1066 · Information Technology · Manager Wei Chen</p>
+      <p class="evidence">Username pnanda is an admin account and the approval ticket is blank.</p>
+      <dl class="facts"><div><dt>HR status</dt><dd>terminated</dd></div><div><dt>Roles</dt><dd>manage_users</dd></div><div><dt>Admin</dt><dd>Yes</dd></div><div><dt>Last login</dt><dd>2026-07-20</dd></div><div><dt>Created</dt><dd>2023-11-01</dd></div><div><dt>Approval ticket</dt><dd>—</dd></div></dl>
+      <p class="fix"><span>Remediation</span> Remove the admin right or obtain a ticket from the system owner and record the ticket id on the account.</p>
+    </article>
+    
+
+    <article class="finding high">
+      <header>
+        <code>rokonkwo</code>
+        <span class="pill high">High</span>
+      </header>
+      <p class="who">Ruth Okonkwo · E1010 · Information Technology · Manager Wei Chen</p>
+      <p class="evidence">Username rokonkwo is an admin account and the approval ticket is blank.</p>
+      <dl class="facts"><div><dt>HR status</dt><dd>active</dd></div><div><dt>Roles</dt><dd>manage_users</dd></div><div><dt>Admin</dt><dd>Yes</dd></div><div><dt>Last login</dt><dd>2026-09-18</dd></div><div><dt>Created</dt><dd>2024-02-01</dd></div><div><dt>Approval ticket</dt><dd>—</dd></div></dl>
+      <p class="fix"><span>Remediation</span> Remove the admin right or obtain a ticket from the system owner and record the ticket id on the account.</p>
+    </article>
+    
+    </section>
+    
+
+    <section id="DRM-01">
+      <h2><code>DRM-01</code> Dormant account</h2>
+      <p class="objective">Accounts with no recent login are removed or reconfirmed.</p>
+      <p class="meta">Access to programs and data · ISO/IEC 27001:2022 5.18 Access rights</p>
+      <p class="meta">Dormant after more than 90 days without a login.</p>
+      <p class="fix section-fix"><span>Suggested remediation</span> Ask the manager whether the account is still required. Disable it if it is not, or document why it stays and the next review date.</p>
+      <p class="meta">5 exceptions</p>
+      
+    <article class="finding medium">
+      <header>
+        <code>dbrooks</code>
+        <span class="pill medium">Medium</span>
+      </header>
+      <p class="who">Daniel Brooks · E1030 · Sales · Manager Casey Diallo</p>
+      <p class="evidence">Last login 2026-01-15 is 258 days before the review date 2026-09-30 (threshold 90 days).</p>
+      <dl class="facts"><div><dt>HR status</dt><dd>active</dd></div><div><dt>Roles</dt><dd>view_reports</dd></div><div><dt>Admin</dt><dd>No</dd></div><div><dt>Last login</dt><dd>2026-01-15</dd></div><div><dt>Created</dt><dd>2022-06-01</dd></div><div><dt>Approval ticket</dt><dd>—</dd></div></dl>
+      <p class="fix"><span>Remediation</span> Ask the manager whether the account is still required. Disable it if it is not, or document why it stays and the next review date.</p>
+    </article>
+    
+
+    <article class="finding medium">
+      <header>
+        <code>felsayed</code>
+        <span class="pill medium">Medium</span>
+      </header>
+      <p class="who">Fatima El-Sayed · E1031 · Operations · Manager Skyler Rossi</p>
+      <p class="evidence">No last login is recorded. The account was created on 2024-06-01, 851 days before the review date 2026-09-30 (threshold 90 days).</p>
+      <dl class="facts"><div><dt>HR status</dt><dd>active</dd></div><div><dt>Roles</dt><dd>view_ledger</dd></div><div><dt>Admin</dt><dd>No</dd></div><div><dt>Last login</dt><dd>—</dd></div><div><dt>Created</dt><dd>2024-06-01</dd></div><div><dt>Approval ticket</dt><dd>—</dd></div></dl>
+      <p class="fix"><span>Remediation</span> Ask the manager whether the account is still required. Disable it if it is not, or document why it stays and the next review date.</p>
+    </article>
+    
+
+    <article class="finding medium">
+      <header>
+        <code>hcho</code>
+        <span class="pill medium">Medium</span>
+      </header>
+      <p class="who">Helen Cho · E1067 · Procurement · Manager Rowan Mbeki</p>
+      <p class="evidence">No last login is recorded. The account was created on 2026-03-01, 213 days before the review date 2026-09-30 (threshold 90 days).</p>
+      <dl class="facts"><div><dt>HR status</dt><dd>terminated</dd></div><div><dt>Roles</dt><dd>create_vendor</dd></div><div><dt>Admin</dt><dd>No</dd></div><div><dt>Last login</dt><dd>—</dd></div><div><dt>Created</dt><dd>2026-03-01</dd></div><div><dt>Approval ticket</dt><dd>—</dd></div></dl>
+      <p class="fix"><span>Remediation</span> Ask the manager whether the account is still required. Disable it if it is not, or document why it stays and the next review date.</p>
+    </article>
+    
+
+    <article class="finding medium">
+      <header>
+        <code>hmartins</code>
+        <span class="pill medium">Medium</span>
+      </header>
+      <p class="who">Hugo Martins · E1032 · Procurement · Manager Rowan Mbeki</p>
+      <p class="evidence">Last login 2026-05-01 is 152 days before the review date 2026-09-30 (threshold 90 days).</p>
+      <dl class="facts"><div><dt>HR status</dt><dd>active</dd></div><div><dt>Roles</dt><dd>create_vendor</dd></div><div><dt>Admin</dt><dd>No</dd></div><div><dt>Last login</dt><dd>2026-05-01</dd></div><div><dt>Created</dt><dd>2021-09-14</dd></div><div><dt>Approval ticket</dt><dd>—</dd></div></dl>
+      <p class="fix"><span>Remediation</span> Ask the manager whether the account is still required. Disable it if it is not, or document why it stays and the next review date.</p>
+    </article>
+    
+
+    <article class="finding medium">
+      <header>
+        <code>jdoe_old</code>
+        <span class="pill medium">Medium</span>
+      </header>
+      <p class="who">No HR record · E0007</p>
+      <p class="evidence">Last login 2025-11-02 is 332 days before the review date 2026-09-30 (threshold 90 days).</p>
+      <dl class="facts"><div><dt>HR status</dt><dd>no HR record</dd></div><div><dt>Roles</dt><dd>view_reports</dd></div><div><dt>Admin</dt><dd>No</dd></div><div><dt>Last login</dt><dd>2025-11-02</dd></div><div><dt>Created</dt><dd>2022-03-01</dd></div><div><dt>Approval ticket</dt><dd>—</dd></div></dl>
+      <p class="fix"><span>Remediation</span> Ask the manager whether the account is still required. Disable it if it is not, or document why it stays and the next review date.</p>
+    </article>
+    
+    </section>
+    
+
+    <section id="SOD-01">
+      <h2><code>SOD-01</code> Segregation of duties conflict</h2>
+      <p class="objective">One person does not hold both sides of a conflicting duty.</p>
+      <p class="meta">Access to programs and data · ISO/IEC 27001:2022 5.3 Segregation of duties</p>
+      <p class="meta">Conflict pairs: create_payment + approve_payment, create_vendor + approve_vendor, create_journal + approve_journal, request_access + approve_access.</p>
+      <p class="fix section-fix"><span>Suggested remediation</span> Remove one of the conflicting roles. If the business cannot split the duty, document the compensating control and who approved it.</p>
+      <p class="meta">4 exceptions</p>
+      
+    <article class="finding high">
+      <header>
+        <code>ahaddad</code>
+        <span class="pill high">High</span>
+      </header>
+      <p class="who">Amira Haddad · E1047 · Finance · Manager Emery Bergstrom</p>
+      <p class="evidence">Username ahaddad holds both create_journal and approve_journal.</p>
+      <dl class="facts"><div><dt>HR status</dt><dd>active</dd></div><div><dt>Roles</dt><dd>create_journal;approve_journal</dd></div><div><dt>Admin</dt><dd>No</dd></div><div><dt>Last login</dt><dd>2026-08-30</dd></div><div><dt>Created</dt><dd>2020-10-10</dd></div><div><dt>Approval ticket</dt><dd>—</dd></div></dl>
+      <p class="fix"><span>Remediation</span> Remove one of the conflicting roles. If the business cannot split the duty, document the compensating control and who approved it.</p>
+    </article>
+    
+
+    <article class="finding high">
+      <header>
+        <code>gibarra</code>
+        <span class="pill high">High</span>
+      </header>
+      <p class="who">Grace Ibarra · E1045 · Finance · Manager Emery Bergstrom</p>
+      <p class="evidence">Username gibarra holds both create_payment and approve_payment.</p>
+      <dl class="facts"><div><dt>HR status</dt><dd>active</dd></div><div><dt>Roles</dt><dd>create_payment;approve_payment</dd></div><div><dt>Admin</dt><dd>No</dd></div><div><dt>Last login</dt><dd>2026-09-16</dd></div><div><dt>Created</dt><dd>2022-02-02</dd></div><div><dt>Approval ticket</dt><dd>—</dd></div></dl>
+      <p class="fix"><span>Remediation</span> Remove one of the conflicting roles. If the business cannot split the duty, document the compensating control and who approved it.</p>
+    </article>
+    
+
+    <article class="finding high">
+      <header>
+        <code>obriggs</code>
+        <span class="pill high">High</span>
+      </header>
+      <p class="who">Owen Briggs · E1068 · Operations · Manager Skyler Rossi</p>
+      <p class="evidence">Username obriggs holds both create_payment and approve_payment.</p>
+      <dl class="facts"><div><dt>HR status</dt><dd>terminated</dd></div><div><dt>Roles</dt><dd>create_payment;approve_payment</dd></div><div><dt>Admin</dt><dd>No</dd></div><div><dt>Last login</dt><dd>2026-08-28</dd></div><div><dt>Created</dt><dd>2022-05-01</dd></div><div><dt>Approval ticket</dt><dd>—</dd></div></dl>
+      <p class="fix"><span>Remediation</span> Remove one of the conflicting roles. If the business cannot split the duty, document the compensating control and who approved it.</p>
+    </article>
+    
+
+    <article class="finding high">
+      <header>
+        <code>twitek</code>
+        <span class="pill high">High</span>
+      </header>
+      <p class="who">Tomasz Witek · E1046 · Procurement · Manager Rowan Mbeki</p>
+      <p class="evidence">Username twitek holds both create_vendor and approve_vendor.</p>
+      <dl class="facts"><div><dt>HR status</dt><dd>active</dd></div><div><dt>Roles</dt><dd>create_vendor;approve_vendor</dd></div><div><dt>Admin</dt><dd>No</dd></div><div><dt>Last login</dt><dd>2026-09-11</dd></div><div><dt>Created</dt><dd>2023-05-23</dd></div><div><dt>Approval ticket</dt><dd>—</dd></div></dl>
+      <p class="fix"><span>Remediation</span> Remove one of the conflicting roles. If the business cannot split the duty, document the compensating control and who approved it.</p>
+    </article>
+    
+    </section>
+    
+
+    <section id="PST-01">
+      <h2><code>PST-01</code> Account created after the termination date</h2>
+      <p class="objective">An account is not created after the person has left.</p>
+      <p class="meta">Access to programs and data · ISO/IEC 27001:2022 5.18 Access rights; 5.15 Access control</p>
+      
+      <p class="fix section-fix"><span>Suggested remediation</span> Disable the account and find out who created it after the termination date. Keep the creation log with the leaver evidence.</p>
+      <p class="meta">2 exceptions</p>
+      
+    <article class="finding high">
+      <header>
+        <code>hcho</code>
+        <span class="pill high">High</span>
+      </header>
+      <p class="who">Helen Cho · E1067 · Procurement · Manager Rowan Mbeki</p>
+      <p class="evidence">Account created on 2026-03-01, after the termination date 2026-01-10.</p>
+      <dl class="facts"><div><dt>HR status</dt><dd>terminated</dd></div><div><dt>Roles</dt><dd>create_vendor</dd></div><div><dt>Admin</dt><dd>No</dd></div><div><dt>Last login</dt><dd>—</dd></div><div><dt>Created</dt><dd>2026-03-01</dd></div><div><dt>Approval ticket</dt><dd>—</dd></div></dl>
+      <p class="fix"><span>Remediation</span> Disable the account and find out who created it after the termination date. Keep the creation log with the leaver evidence.</p>
+    </article>
+    
+
+    <article class="finding high">
+      <header>
+        <code>lvoss</code>
+        <span class="pill high">High</span>
+      </header>
+      <p class="who">Lena Voss · E1069 · Sales · Manager Casey Diallo</p>
+      <p class="evidence">Account created on 2026-04-15, after the termination date 2026-04-01.</p>
+      <dl class="facts"><div><dt>HR status</dt><dd>terminated</dd></div><div><dt>Roles</dt><dd>view_reports</dd></div><div><dt>Admin</dt><dd>No</dd></div><div><dt>Last login</dt><dd>2026-09-15</dd></div><div><dt>Created</dt><dd>2026-04-15</dd></div><div><dt>Approval ticket</dt><dd>—</dd></div></dl>
+      <p class="fix"><span>Remediation</span> Disable the account and find out who created it after the termination date. Keep the creation log with the leaver evidence.</p>
+    </article>
+    
+    </section>
+    
+  </main>
+  <footer>
+    <p>
+      Generated by itgc-access-review 1.0.0 on 2026-10-06 14:54.
+      Sample populations are fictional and are not an engagement deliverable.
+      The tool checks ticket presence, not ticket validity, and it treats every
+      exported account as active.
+    </p>
+  </footer>
+</body>
+</html>

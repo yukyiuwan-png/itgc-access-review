@@ -1,0 +1,95 @@
+# Quarterly ITGC user-access review.
+#
+# Change the wording, the severity, the dormant window, or the conflict
+# pairs here. The "type" is the test the program knows how to run:
+#
+#   terminated_with_access        leaver still on the active export
+#   orphan_account                employee id blank or missing from HR
+#   privileged_without_approval   admin flag with no approval ticket
+#   dormant_account               no login for more than inactive_days
+#   segregation_of_duties         one user holds both roles in a pair
+#   created_after_termination     account opened after the leaver date
+#
+# Set enabled to false to leave a test out of this review. Record why in
+# the workpaper: a skipped test is not a pass.
+#
+# Dormant days are counted back from review_date, not from today, so the
+# same files produce the same exceptions later.
+
+organization: "Harbor & Pine Trading (fictional)"
+system_name: "LedgerOne ERP"
+review_date: "2026-09-30"
+control_domain: "Access to programs and data"
+
+rules:
+  - id: TER-01
+    type: terminated_with_access
+    name: Terminated employee still has an active account
+    enabled: true
+    severity: High
+    control_objective: "Access is removed when employment ends."
+    iso_controls:
+      - "5.18 Access rights"
+      - "5.15 Access control"
+    remediation: "Disable or delete the account, keep the system evidence of revocation, and link it to the leaver request."
+
+  - id: ORP-01
+    type: orphan_account
+    name: Account has no matching HR record
+    enabled: true
+    severity: Medium
+    control_objective: "Every account maps to a person on the HR roster."
+    iso_controls:
+      - "5.16 Identity management"
+      - "5.18 Access rights"
+    remediation: "Map the account to an employee id, or disable it and find out how it was created."
+
+  - id: ADM-01
+    type: privileged_without_approval
+    name: Privileged access without an approval ticket
+    enabled: true
+    severity: High
+    control_objective: "Privileged access is approved before it is granted."
+    iso_controls:
+      - "8.2 Privileged access rights"
+      - "5.18 Access rights"
+    remediation: "Remove the admin right or obtain a ticket from the system owner and record the ticket id on the account."
+
+  - id: DRM-01
+    type: dormant_account
+    name: Dormant account
+    enabled: true
+    severity: Medium
+    control_objective: "Accounts with no recent login are removed or reconfirmed."
+    iso_controls:
+      - "5.18 Access rights"
+    parameters:
+      inactive_days: 90
+    remediation: "Ask the manager whether the account is still required. Disable it if it is not, or document why it stays and the next review date."
+
+  - id: SOD-01
+    type: segregation_of_duties
+    name: Segregation of duties conflict
+    enabled: true
+    severity: High
+    control_objective: "One person does not hold both sides of a conflicting duty."
+    iso_controls:
+      - "5.3 Segregation of duties"
+    parameters:
+      conflict_pairs:
+        - [create_payment, approve_payment]
+        - [create_vendor, approve_vendor]
+        - [create_journal, approve_journal]
+        - [request_access, approve_access]
+    remediation: "Remove one of the conflicting roles. If the business cannot split the duty, document the compensating control and who approved it."
+
+  - id: PST-01
+    type: created_after_termination
+    name: Account created after the termination date
+    enabled: true
+    severity: High
+    control_objective: "An account is not created after the person has left."
+    iso_controls:
+      - "5.18 Access rights"
+      - "5.15 Access control"
+    remediation: "Disable the account and find out who created it after the termination date. Keep the creation log with the leaver evidence."

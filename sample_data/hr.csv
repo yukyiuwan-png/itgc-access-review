@@ -1,0 +1,73 @@
+employee_id,name,department,status,termination_date,manager
+E1001,Wei Chen,Information Technology,active,,Alex Rowan (Director)
+E1002,Emery Bergstrom,Finance,active,,Alex Rowan (Director)
+E1003,Logan Silva,Information Technology,active,,Wei Chen
+E1004,Harper Lindqvist,Human Resources,active,,Alex Rowan (Director)
+E1005,Rowan Mbeki,Procurement,active,,Alex Rowan (Director)
+E1006,Skyler Rossi,Operations,active,,Alex Rowan (Director)
+E1007,Casey Diallo,Sales,active,,Alex Rowan (Director)
+E1008,Hannah Berg,Information Technology,active,,Wei Chen
+E1009,Jordan Gupta,Legal,active,,Alex Rowan (Director)
+E1010,Ruth Okonkwo,Information Technology,active,,Wei Chen
+E1011,Finley Rahman,Internal Audit,active,,Alex Rowan (Director)
+E1012,Indigo Sato,Finance,active,,Emery Bergstrom
+E1013,Jordan Novak,Information Technology,active,,Wei Chen
+E1014,Drew Yilmaz,Human Resources,active,,Harper Lindqvist
+E1015,Patrick Olsen,Information Technology,active,,Wei Chen
+E1016,Lane Duval,Procurement,active,,Rowan Mbeki
+E1017,Harper Fischer,Operations,active,,Skyler Rossi
+E1018,Perry Ueda,Sales,active,,Casey Diallo
+E1019,Avery Nakamura,Legal,active,,Jordan Gupta
+E1020,Casey Yamamoto,Internal Audit,active,,Finley Rahman
+E1021,Logan Moreau,Finance,active,,Emery Bergstrom
+E1022,Carmen Fernandez,Finance,active,,Emery Bergstrom
+E1023,Finley Yamamoto,Information Technology,active,,Wei Chen
+E1024,Rowan Gupta,Human Resources,active,,Harper Lindqvist
+E1025,Tatum Jensen,Procurement,active,,Rowan Mbeki
+E1026,Remy Zimmerman,Operations,active,,Skyler Rossi
+E1027,River Tanaka,Sales,active,,Casey Diallo
+E1028,Riley Horvat,Legal,active,,Jordan Gupta
+E1029,Lane Kowalski,Internal Audit,active,,Finley Rahman
+E1030,Daniel Brooks,Sales,active,,Casey Diallo
+E1031,Fatima El-Sayed,Operations,active,,Skyler Rossi
+E1032,Hugo Martins,Procurement,active,,Rowan Mbeki
+E1033,Tatum Gupta,Finance,active,,Emery Bergstrom
+E1034,Micah Vasquez,Information Technology,active,,Wei Chen
+E1035,Sage Andersson,Human Resources,active,,Harper Lindqvist
+E1036,Noel Petrov,Procurement,active,,Rowan Mbeki
+E1037,Parker Diallo,Operations,active,,Skyler Rossi
+E1038,Harper Vasquez,Sales,active,,Casey Diallo
+E1039,Skyler Rahman,Legal,active,,Jordan Gupta
+E1040,Mina Park,Human Resources,active,,Harper Lindqvist
+E1041,Rowan Bhandari,Internal Audit,active,,Finley Rahman
+E1042,Logan Horvat,Finance,active,,Emery Bergstrom
+E1043,Shiloh Nakamura,Information Technology,active,,Wei Chen
+E1044,Shiloh Zimmerman,Human Resources,active,,Harper Lindqvist
+E1045,Grace Ibarra,Finance,active,,Emery Bergstrom
+E1046,Tomasz Witek,Procurement,active,,Rowan Mbeki
+E1047,Amira Haddad,Finance,active,,Emery Bergstrom
+E1048,Ben Cho,Finance,active,,Emery Bergstrom
+E1049,Sara Lind,Finance,active,,Emery Bergstrom
+E1050,Finley Zhou,Procurement,active,,Rowan Mbeki
+E1051,Logan Yilmaz,Operations,active,,Skyler Rossi
+E1052,Parker Sato,Sales,active,,Casey Diallo
+E1053,Blake Mbeki,Legal,active,,Jordan Gupta
+E1054,Jules Nakamura,Internal Audit,active,,Finley Rahman
+E1055,Eden Bhandari,Finance,active,,Emery Bergstrom
+E1056,Logan Vogel,Information Technology,active,,Wei Chen
+E1057,Micah Rahman,Human Resources,active,,Harper Lindqvist
+E1058,Oakley Esposito,Procurement,active,,Rowan Mbeki
+E1059,Harper Diallo,Operations,active,,Skyler Rossi
+E1060,Oakley Costa,Sales,active,,Casey Diallo
+E1061,Logan Farouk,Legal,active,,Jordan Gupta
+E1062,Finley Papadopoulos,Internal Audit,active,,Finley Rahman
+E1063,Oakley Quintero,Finance,active,,Emery Bergstrom
+E1064,Gray Costa,Information Technology,active,,Wei Chen
+E1065,Marcus Hale,Finance,terminated,2026-06-15,Emery Bergstrom
+E1066,Priya Nandakumar,Information Technology,terminated,2026-08-01,Wei Chen
+E1067,Helen Cho,Procurement,terminated,2026-01-10,Rowan Mbeki
+E1068,Owen Briggs,Operations,terminated,2026-09-01,Skyler Rossi
+E1069,Lena Voss,Sales,terminated,2026-04-01,Casey Diallo
+E1070,Samuel Adeyemi,Human Resources,terminated,2026-05-20,Harper Lindqvist
+E1071,Nora Feldman,Legal,terminated,2026-07-01,Jordan Gupta
+E1072,Chris Dalton,Operations,terminated,2026-02-28,Skyler Rossi
